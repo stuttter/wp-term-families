@@ -42,8 +42,8 @@ add_action( 'plugins_loaded', '_wp_term_families' );
  */
 function _wp_term_families_init() {
 
-	// Setup the family relationship
-	wp_set_taxonomy_family( 'category', 'post_tag' );
+	// Allow term families to be registered
+	do_action( 'wp_register_term_families' );
 
 	// Activate term family
 	new WP_Term_Family( __FILE__ );
