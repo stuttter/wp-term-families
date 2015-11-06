@@ -7,6 +7,7 @@
  * provide a UI for term meta values. It hooks into several different WordPress
  * core actions & filters to add columns to list tables, add fields to forms,
  * and handle the sanitization & saving of values.
+ *
  * @since 0.1.3
  *
  * @package TermMeta/UI
@@ -186,7 +187,7 @@ class WP_Term_Meta_UI {
 	 * @param array $args
 	 * @return array
 	 */
-	private static function get_taxonomies( $args = array() ) {
+	private function get_taxonomies( $args = array() ) {
 
 		// Filter default arguments
 		$defaults = apply_filters( "wp_term_{$this->meta_key}_get_taxonomies", array(
