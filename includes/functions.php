@@ -12,6 +12,21 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Filter the family taxonomies array, and ensure that taxonomies without
+ * families do not get the UI
+ *
+ * @since 0.1.0
+ *
+ * @param array $args
+ */
+function wp_filter_taxonomy_families( $args = array() ) {
+	$args['has_family'] = true;
+
+	return $args;
+}
+add_filter( 'wp_term_family_get_taxonomies', 'wp_filter_taxonomy_families' );
+
+/**
  * Set a family for a taxonomy
  *
  * @since 0.1.0
@@ -26,7 +41,8 @@ function wp_set_taxonomy_family( $taxonomy = '', $family = '' ) {
 	}
 
 	// Set the taxonomy family
-	$GLOBALS['wp_taxonomies'][ $taxonomy ]->family = $family;
+	$GLOBALS['wp_taxonomies'][ $taxonomy ]->has_family = true;
+	$GLOBALS['wp_taxonomies'][ $taxonomy ]->family     = $family;
 }
 
 /**
