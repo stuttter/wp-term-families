@@ -188,10 +188,13 @@ class WP_Term_Meta_UI {
 	 */
 	private static function get_taxonomies( $args = array() ) {
 
-		// Parse arguments
-		$r = wp_parse_args( $args, array(
+		// Filter default arguments
+		$defaults = apply_filters( "wp_term_{$this->meta_key}_get_taxonomies", array(
 			'show_ui' => true
 		) );
+
+		// Parse arguments
+		$r = wp_parse_args( $args, $defaults );
 
 		// Get & return the taxonomies
 		return get_taxonomies( $r );
