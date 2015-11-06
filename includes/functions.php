@@ -32,20 +32,17 @@ function wp_set_taxonomy_family( $taxonomy = '', $family = '' ) {
 /**
  * Return all of the registered term families
  *
- * @todo Registration API
- * @todo Better labels
- * @todo Role & capability callbacks
- *
  * @since 0.1.0
  *
  * @return array
  */
 function wp_get_term_families( $taxonomy = null ) {
 
-	// Default return value
-	$retval = array(
-		'0' => esc_html__( 'No Families', 'wp-term-families' )
-	);
+	// Default return value (ugh)
+	$retval = array( (object) array(
+		'term_id' => 0,
+		'name'    => esc_html__( 'None', 'wp-term-families' )
+	) );
 
 	// Get the taxonomy
 	$tax = get_taxonomy( $taxonomy );
