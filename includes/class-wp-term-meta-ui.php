@@ -8,9 +8,9 @@
  * core actions & filters to add columns to list tables, add fields to forms,
  * and handle the sanitization & saving of values.
  *
- * @since 0.1.3
+ * @since 0.1.1
  *
- * @package TermMeta/UI
+ * @package Plugins/Terms/Metadata/UI
  */
 
 // Exit if accessed directly
@@ -189,8 +189,15 @@ class WP_Term_Meta_UI {
 	 */
 	private function get_taxonomies( $args = array() ) {
 
-		// Filter default arguments
-		$defaults = apply_filters( "wp_term_{$this->meta_key}_get_taxonomies", array(
+		// The filter key/tag
+		$tag = "wp_term_{$this->meta_key}_get_taxonomies";
+
+		/**
+		 * Allow filtering of affected taxonomies
+		 *
+		 * @since 0.1.3
+		 */
+		$defaults = apply_filters( $tag, array(
 			'show_ui' => true
 		) );
 
@@ -480,4 +487,3 @@ class WP_Term_Meta_UI {
 	}
 }
 endif;
-
