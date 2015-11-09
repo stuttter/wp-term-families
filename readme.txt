@@ -37,6 +37,9 @@ This plugin requires [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ 
 == Screenshots ==
 
 1. Category Family
+2. Quick Edit
+3. Edit
+4. Example Tags
 
 == Installation ==
 
