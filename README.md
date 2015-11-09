@@ -1,8 +1,8 @@
-# WP Term Family
+# WP Term Families
 
-Family for categories, tags, and other taxonomy terms
+Families for categories, tags, and other taxonomy terms.
 
-WP Term Family allows users to assign a Family to any category, tag, or taxonomy term using a dropdown, providing customized functionality for taxonomy terms.
+WP Term Families allows users to assign a "Family" to any category, tag, or taxonomy term using a dropdown of terms from another taxonomy.
 
 # Installation
 
@@ -45,7 +45,7 @@ $terms = get_terms( 'category', array(
 
 ### Where can I get support?
 
-The WordPress support forums: https://wordpress.org/support/plugin/wp-term-family/
+The WordPress support forums: https://wordpress.org/support/plugin/wp-term-families/
 
 ### Can I contribute?
 
