@@ -24,9 +24,21 @@ No. There are no new database tables with this plugin.
 
 No. All of WordPress's core database tables remain untouched.
 
-### Can I query for terms by their `Family`?
+### How do I use it?
 
-Yes. Use a `meta_query` like:
+Connect taxonomies together like so:
+
+```
+/**
+ * Use 'post_tag' taxonomy as a family for categories
+ */
+function your_plugin_thing() {
+	wp_set_taxonomy_family( 'category', 'post_tag' );
+}
+add_action( 'wp_register_term_families', 'your_plugin_thing' );
+```
+
+Then query for terms by their `family` with a `meta_query` like:
 
 ```
 $terms = get_terms( 'category', array(
@@ -35,10 +47,10 @@ $terms = get_terms( 'category', array(
 	'parent'     => 0,
 	'hide_empty' => false,
 
-	// Query by family using the "wp-term-meta" plugin!
+	// Query by family
 	'meta_query' => array( array(
 		'key'   => 'family',
-		'value' => 'private'
+		'value' => 2 // term ID 2 in 'post_tag' taxonomy
 	) )
 ) );
 ```
