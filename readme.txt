@@ -88,14 +88,5 @@ http://github.com/stuttter/wp-term-family/
 
 == Changelog ==
 
-= 0.1.3 =
-* Use base class
-
-= 0.1.2 =
-* Sanitize output
-
-= 0.1.1 =
-* Introduce UI
-
 = 0.1.0 =
 * Initial release
