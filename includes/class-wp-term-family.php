@@ -22,12 +22,12 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 	/**
 	 * @var string Plugin version
 	 */
-	public $version = '0.1.0';
+	public $version = '0.1.1';
 
 	/**
 	 * @var string Database version
 	 */
-	public $db_version = 201511060001;
+	public $db_version = 201511230003;
 
 	/**
 	 * @var string Database version
@@ -49,7 +49,7 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 		// Setup the labels
 		$this->labels = array(
 			'singular'    => esc_html__( 'Family',   'wp-term-families' ),
-			'plural'      => esc_html__( 'families', 'wp-term-families' ),
+			'plural'      => esc_html__( 'Families', 'wp-term-families' ),
 			'description' => esc_html__( 'The family is used to group terms together using another taxonomy.', 'wp-term-families' )
 		);
 
@@ -57,8 +57,24 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 		parent::__construct( $file );
 	}
 
+	/** Assets ****************************************************************/
+
 	/**
-	 * Add help tabs for `color` column
+	 * Enqueue quick-edit JS
+	 *
+	 * @since 0.1.0
+	 */
+	public function enqueue_scripts() {
+
+		// Quick-edit support
+		wp_enqueue_script( 'wp-term-families', $this->url . 'assets/js/term-families.js', array( 'jquery' ), $this->db_version, true );
+
+		// Styles
+		wp_enqueue_style( 'wp-term-families', $this->url . 'assets/css/term-families.css', array(), $this->db_version );
+	}
+
+	/**
+	 * Add help tabs for `family` column
 	 *
 	 * @since 0.1.0
 	 */
@@ -68,23 +84,6 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 			'title'   => __( 'Term Family', 'wp-term-family' ),
 			'content' => '<p>' . __( 'Set term family to group terms by another taxonomy.', 'wp-term-family' ) . '</p>',
 		) );
-	}
-
-	/**
-	 * Align custom `color` column
-	 *
-	 * @since 0.1.0
-	 */
-	public function admin_head() {
-		?>
-
-		<style type="text/css">
-			.column-family {
-				width: 94px;
-			}
-		</style>
-
-		<?php
 	}
 
 	/**
@@ -185,8 +184,13 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 			? $family->name
 			: $this->no_value;
 
+		// ID?
+		$id = isset( $family )
+			? $family->term_id
+			: 0;
+
 		// Return
-		return esc_html( $retval );
+		return '<span class="term-family" data-family="' . esc_html( $id ) . '">' . esc_html( $retval ) . '</span>';
 	}
 }
 endif;
