@@ -8,9 +8,10 @@
  * core actions & filters to add columns to list tables, add fields to forms,
  * and handle the sanitization & saving of values.
  *
- * @since 0.1.3
+ * @since 0.1.1
+ * @version 0.1.4
  *
- * @package TermMeta/UI
+ * @package Plugins/Terms/Metadata/UI
  */
 
 // Exit if accessed directly
@@ -34,7 +35,7 @@ class WP_Term_Meta_UI {
 	/**
 	 * @var string Database version
 	 */
-	protected $db_version = 201501010001;
+	protected $db_version = 201601010001;
 
 	/**
 	 * @var string Database version
@@ -81,9 +82,24 @@ class WP_Term_Meta_UI {
 	public $basename = '';
 
 	/**
-	 * @var boo Whether to use fancy UI
+	 * @var array Which taxonomies are being targeted?
+	 */
+	public $taxonomies = array();
+
+	/**
+	 * @var bool Whether to use fancy UI
 	 */
 	public $fancy = false;
+
+	/**
+	 * @var bool Whether to show a column
+	 */
+	public $has_column = true;
+
+	/**
+	 * @var bool Whether to show fields
+	 */
+	public $has_fields = true;
 
 	/**
 	 * Hook into queries, admin screens, and more!
@@ -93,40 +109,95 @@ class WP_Term_Meta_UI {
 	public function __construct( $file = '' ) {
 
 		// Setup plugin
-		$this->file     = $file;
-		$this->url      = plugin_dir_url( $this->file );
-		$this->path     = plugin_dir_path( $this->file );
-		$this->basename = plugin_basename( $this->file );
-		$this->fancy    = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
+		$this->file       = $file;
+		$this->url        = plugin_dir_url( $this->file );
+		$this->path       = plugin_dir_path( $this->file );
+		$this->basename   = plugin_basename( $this->file );
+		$this->taxonomies = $this->get_taxonomies();
+		$this->fancy      = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
+
+		// Register Meta
+		$this->register_meta();
 
 		// Queries
 		add_action( 'create_term', array( $this, 'save_meta' ), 10, 2 );
 		add_action( 'edit_term',   array( $this, 'save_meta' ), 10, 2 );
 
-		// Get visible taxonomies
-		$taxonomies = $this->get_taxonomies();
-
 		// Always hook these in, for ajax actions
-		foreach ( $taxonomies as $value ) {
+		foreach ( $this->taxonomies as $value ) {
 
-			// Unfancy gets the column
-			add_filter( "manage_edit-{$value}_columns",          array( $this, 'add_column_header' ) );
-			add_filter( "manage_{$value}_custom_column",         array( $this, 'add_column_value'  ), 10, 3 );
-			add_filter( "manage_edit-{$value}_sortable_columns", array( $this, 'sortable_columns'  ) );
+			// Has column?
+			if ( true === $this->has_column ) {
+				add_filter( "manage_edit-{$value}_columns",          array( $this, 'add_column_header' ) );
+				add_filter( "manage_{$value}_custom_column",         array( $this, 'add_column_value'  ), 10, 3 );
+				add_filter( "manage_edit-{$value}_sortable_columns", array( $this, 'sortable_columns'  ) );
+			}
 
-			add_action( "{$value}_add_form_fields",  array( $this, 'add_form_field'  ) );
-			add_action( "{$value}_edit_form_fields", array( $this, 'edit_form_field' ) );
+			// Has fields?
+			if ( true === $this->has_fields ) {
+				add_action( "{$value}_add_form_fields",  array( $this, 'add_form_field'  ) );
+				add_action( "{$value}_edit_form_fields", array( $this, 'edit_form_field' ) );
+			}
 		}
 
 		// ajax actions
-		$ajax_key = "ajax_{$this->meta_key}_terms";
-		add_action( "wp_{$ajax_key}", array( $this, 'ajax_update' ) );
+		add_action( "wp_ajax_{$this->meta_key}_terms", array( $this, 'ajax_update' ) );
 
 		// Only blog admin screens
 		if ( is_blog_admin() || doing_action( 'wp_ajax_inline_save_tax' ) ) {
 			add_action( 'admin_init',         array( $this, 'admin_init' ) );
 			add_action( 'load-edit-tags.php', array( $this, 'edit_tags'  ) );
 		}
+	}
+
+	/**
+	 * Register term meta, key, and callbacks
+	 *
+	 * @since 0.1.5
+	 */
+	public function register_meta() {
+		register_meta(
+			'term',
+			$this->meta_key,
+			array( $this, 'sanitize_callback' ),
+			array( $this, 'auth_callback'     )
+		);
+	}
+
+	/**
+	 * Stub method for sanitizing meta data
+	 *
+	 * @since 0.1.5
+	 *
+	 * @param   mixed $data
+	 * @return  mixed
+	 */
+	public function sanitize_callback( $data = '' ) {
+		return $data;
+	}
+
+	/**
+	 * Stub method for authorizing the saving of meta data
+	 *
+	 * @since 0.1.5
+	 *
+	 * @param  bool    $allowed
+	 * @param  string  $meta_key
+	 * @param  int     $post_id
+	 * @param  int     $user_id
+	 * @param  string  $cap
+	 * @param  array   $caps
+	 *
+	 * @return boolean
+	 */
+	public function auth_callback( $allowed = false, $meta_key = '', $post_id = 0, $user_id = 0, $cap = '', $caps = array() ) {
+
+		// Bail if incorrect meta key
+		if ( $meta_key !== $this->meta_key ) {
+			return $allowed;
+		}
+
+		return $allowed;
 	}
 
 	/**
@@ -173,6 +244,13 @@ class WP_Term_Meta_UI {
 	public function help_tabs() { }
 
 	/**
+	 * Add help tabs for this metadata
+	 *
+	 * @since 0.1.2
+	 */
+	public function admin_head() { }
+
+	/**
 	 * Quick edit ajax updating
 	 *
 	 * @since 0.1.1
@@ -189,8 +267,15 @@ class WP_Term_Meta_UI {
 	 */
 	private function get_taxonomies( $args = array() ) {
 
-		// Filter default arguments
-		$defaults = apply_filters( "wp_term_{$this->meta_key}_get_taxonomies", array(
+		// The filter key/tag
+		$tag = "wp_term_{$this->meta_key}_get_taxonomies";
+
+		/**
+		 * Allow filtering of affected taxonomies
+		 *
+		 * @since 0.1.3
+		 */
+		$defaults = apply_filters( $tag, array(
 			'show_ui' => true
 		) );
 
@@ -394,7 +479,7 @@ class WP_Term_Meta_UI {
 	public function quick_edit_meta( $column_name = '', $screen = '', $name = '' ) {
 
 		// Bail if not the meta_key column on the `edit-tags` screen for a visible taxonomy
-		if ( ( $this->meta_key !== $column_name ) || ( 'edit-tags' !== $screen ) || ! in_array( $name, $this->get_taxonomies() ) ) {
+		if ( ( $this->meta_key !== $column_name ) || ( 'edit-tags' !== $screen ) || ! in_array( $name, $this->taxonomies ) ) {
 			return false;
 		} ?>
 
@@ -480,4 +565,3 @@ class WP_Term_Meta_UI {
 	}
 }
 endif;
-
