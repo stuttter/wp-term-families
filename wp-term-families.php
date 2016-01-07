@@ -5,7 +5,7 @@
  * Plugin URI:  https://wordpress.org/plugins/wp-term-families/
  * Description: Families for taxonomy terms
  * Author:      John James Jacoby
- * Version:     0.1.1
+ * Version:     0.2.0
  * Author URI:  https://profiles.wordpress.org/johnjamesjacoby/
  * License:     GPL v2 or later
  */

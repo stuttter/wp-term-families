@@ -19,7 +19,6 @@ This plugin requires [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ 
 
 = Also checkout =
 
-* [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Sort taxonomy terms, your way.")
 * [WP Term Authors](https://wordpress.org/plugins/wp-term-authors/ "Authors for categories, tags, and other taxonomy terms.")
 * [WP Term Order](https://wordpress.org/plugins/wp-term-order/ "Sort taxonomy terms, your way.")
 * [WP Term Colors](https://wordpress.org/plugins/wp-term-colors/ "Pretty colors for categories, tags, and other taxonomy terms.")
@@ -80,6 +79,9 @@ The WordPress support forums: https://wordpress.org/support/plugin/wp-term-famil
 http://github.com/stuttter/wp-term-family/
 
 == Changelog ==
+
+= 0.2.0 =
+* Update base class
 
 = 0.1.1 =
 * Fix quick-edit UI
