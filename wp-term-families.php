@@ -20,11 +20,6 @@ defined( 'ABSPATH' ) || exit;
  */
 function _wp_term_families() {
 
-	// Bail if no term meta
-	if ( ! function_exists( 'add_term_meta' ) ) {
-		return;
-	}
-
 	// Setup the main file
 	$plugin_path = plugin_dir_path( __FILE__ );
 
