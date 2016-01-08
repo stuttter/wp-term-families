@@ -1,10 +1,14 @@
-jQuery( document ).ready( function() {
+jQuery( document ).ready( function( $ ) {
     'use strict';
 
-    jQuery( '.editinline' ).on( 'click', function() {
-        var tag_id = jQuery( this ).parents( 'tr' ).attr( 'id' ),
-			family = jQuery( 'td.family span', '#' + tag_id ).attr( 'data-family' );
+    $( '.editinline' ).on( 'click', function() {
+        var tag_id = $( this ).parents( 'tr' ).attr( 'id' ),
+			family = $( 'td.family span', '#' + tag_id ).attr( 'data-family' );
 
-        jQuery( 'select[name="term-family"]', '.inline-edit-row' ).val( family );
+		if ( typeof( family ) !== 'undefined' ) {
+			setTimeout( function() {
+				$( 'select[name="term-family"]', '.inline-edit-row' ).val( family );
+			}, 100 );
+		}
     } );
 } );
