@@ -3,7 +3,7 @@ jQuery( document ).ready( function( $ ) {
 
     $( '.editinline' ).on( 'click', function() {
         var tag_id = $( this ).parents( 'tr' ).attr( 'id' ),
-			family = $( 'td.family span', '#' + tag_id ).attr( 'data-family' );
+			family = $( 'td.family span', '#' + tag_id ).data( 'family' );
 
 		if ( typeof( family ) !== 'undefined' ) {
 			setTimeout( function() {
