@@ -355,7 +355,7 @@ class WP_Term_Meta_UI {
 	public function ajax_update() {}
 
 	/**
-	 * Return the formatted output for the colomn row
+	 * Return the formatted output for the column row
 	 *
 	 * @since 0.1.2
 	 *
