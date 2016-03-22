@@ -61,18 +61,6 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 	 */
 	public function enqueue_scripts() {
 
-		// Get current taxonomy
-		$taxonomy = isset( $_REQUEST['taxonomy'] )
-			? $_REQUEST['taxonomy']
-			: $GLOBALS['taxnow'];
-
-		$tax = get_taxonomy( $taxonomy );
-
-		// Bail if no taxonomy family
-		if ( empty( $tax->family ) ) {
-			return;
-		}
-
 		// Quick-edit support
 		wp_enqueue_script( 'wp-term-families', $this->url . 'assets/js/term-families.js', array( 'jquery' ), $this->db_version, true );
 
@@ -86,19 +74,6 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 	 * @since 0.1.0
 	 */
 	public function help_tabs() {
-
-		// Get current taxonomy
-		$taxonomy = isset( $_REQUEST['taxonomy'] )
-			? $_REQUEST['taxonomy']
-			: $GLOBALS['taxnow'];
-
-		$tax = get_taxonomy( $taxonomy );
-
-		// Bail if no taxonomy family
-		if ( empty( $tax->family ) ) {
-			return;
-		}
-
 		get_current_screen()->add_help_tab(array(
 			'id'      => 'wp_term_families_help_tab',
 			'title'   => __( 'Term Family', 'wp-term-family' ),
@@ -174,7 +149,7 @@ final class WP_Term_Family extends WP_Term_Meta_UI {
 	}
 
 	/**
-	 * Return the formatted output for the colomn row
+	 * Return the formatted output for the column row
 	 *
 	 * @since 0.1.0
 	 *
