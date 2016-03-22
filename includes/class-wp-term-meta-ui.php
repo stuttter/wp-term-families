@@ -9,7 +9,7 @@
  * and handle the sanitization & saving of values.
  *
  * @since 0.1.1
- * @version 0.1.6
+ * @version 0.1.8
  *
  * @package Plugins/Terms/Metadata/UI
  */
@@ -113,8 +113,12 @@ class WP_Term_Meta_UI {
 		$this->url        = plugin_dir_url( $this->file );
 		$this->path       = plugin_dir_path( $this->file );
 		$this->basename   = plugin_basename( $this->file );
-		$this->taxonomies = $this->get_taxonomies();
 		$this->fancy      = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
+
+		// Only look for taxonomies if not already set
+		if ( empty( $this->taxonomies ) ) {
+			$this->taxonomies = $this->get_taxonomies();
+		}
 
 		// Maybe build db version key
 		if ( empty( $this->db_version_key ) ) {
@@ -227,10 +231,18 @@ class WP_Term_Meta_UI {
 	 */
 	public function edit_tags() {
 
+		// Bail if taxonomy does not include colors
+		if ( empty( $GLOBALS['taxnow'] ) || ! in_array( $GLOBALS['taxnow'], $this->taxonomies, true ) ) {
+			return;
+		}
+
 		// Enqueue javascript
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'admin_head',            array( $this, 'help_tabs'       ) );
-		add_action( 'admin_head',            array( $this, 'admin_head'      ) );
+		add_action( 'admin_head-term.php',               array( $this, 'help_tabs'       ) );
+		add_action( 'admin_head-edit-tags.php',          array( $this, 'help_tabs'       ) );
+		add_action( 'admin_head-term.php',               array( $this, 'admin_head'      ) );
+		add_action( 'admin_head-edit-tags.php',          array( $this, 'admin_head'      ) );
+		add_action( 'admin_print_scripts-term.php',      array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_print_scripts-edit-tags.php', array( $this, 'enqueue_scripts' ) );
 
 		// Quick edit
 		add_action( 'quick_edit_custom_box', array( $this, 'quick_edit_meta' ), 10, 3 );
@@ -341,6 +353,17 @@ class WP_Term_Meta_UI {
 	 * @since 0.1.1
 	 */
 	public function ajax_update() {}
+
+	/**
+	 * Return the formatted output for the colomn row
+	 *
+	 * @since 0.1.2
+	 *
+	 * @param string $meta
+	 */
+	protected function format_output( $meta = '' ) {
+		return esc_html( $meta );
+	}
 
 	/**
 	 * Return the taxonomies used by this plugin
