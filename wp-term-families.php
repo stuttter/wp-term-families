@@ -8,7 +8,7 @@
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: Families for taxonomy terms
- * Version:     0.2.0
+ * Version:     2.0.0
  * Text Domain: wp-term-families
  * Domain Path: /assets/lang/
  */
