@@ -1,11 +1,13 @@
 === WP Term Family ===
-Contributors: johnjamesjacoby, stuttter
-Tags: taxonomy, term, meta, metadata, Family, privacy
+Contributors:      johnjamesjacoby, stuttter
+Tags:              taxonomy, term, meta, metadata, family, privacy
+Requires PHP:      5.6.20
 Requires at least: 4.4
-Tested up to: 4.4
-Stable tag: 0.1.1
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to:      5.2
+Stable tag:        2.0.0
+License:           GPLv2 or later
+License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+Donate link:       https://ko-fi.com/jjj
 
 == Description ==
 
@@ -49,7 +51,7 @@ Install the [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Metadata
 
 = Does this plugin depend on any others? =
 
-Yes. Please install the [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Metadata, for taxonomy terms.") plugin.
+No. Not since WordPress 4.4.
 
 = Does this create new database tables? =
 
@@ -88,6 +90,9 @@ The WordPress support forums: https://wordpress.org/support/plugin/wp-term-famil
 http://github.com/stuttter/wp-term-family/
 
 == Changelog ==
+
+= 2.0.0 =
+* Update base class
 
 = 0.2.0 =
 * Update base class
