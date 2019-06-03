@@ -111,7 +111,8 @@ class UI {
 		$this->path       = plugin_dir_path( $this->file );
 		$this->basename   = plugin_basename( $this->file );
 
-		add_action( 'init', array( $this, 'initialize' ), 11 );
+		// Initialize late, after taxonomies are likely registered
+		add_action( 'init', array( $this, 'initialize' ), 999 );
 	}
 
 	/**
