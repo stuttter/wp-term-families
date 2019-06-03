@@ -10,7 +10,7 @@ namespace JJJ\WP\Term\Meta;
  * and handle the sanitization & saving of values.
  *
  * @since   2.0.0
- * @version 3.0.0
+ * @version 3.0.1
  */
 
 // Exit if accessed directly
