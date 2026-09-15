@@ -9,6 +9,8 @@ License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Donate link:       https://ko-fi.com/jjj
 
+Associate categories, tags, and other taxonomy terms into families.
+
 == Description ==
 
 Family for categories, tags, and other taxonomy terms
